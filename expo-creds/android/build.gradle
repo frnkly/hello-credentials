@@ -41,3 +41,10 @@ android {
     abortOnError false
   }
 }
+
+dependencies {
+  // References:
+  //  - https://developer.android.com/identity/sign-in/credential-provider#declare-dependencies
+  //  - https://developer.android.com/jetpack/androidx/releases/credentials
+  implementation "androidx.credentials:credentials:1.5.0"
+}
