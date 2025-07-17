@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ExpoCredsModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.creds.ExpoCredsModule"]
+  }
+}
