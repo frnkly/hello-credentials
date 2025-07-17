@@ -37,19 +37,19 @@ import androidx.credentials.provider.PasswordCredentialEntry
 import androidx.credentials.provider.ProviderClearCredentialStateRequest
 import androidx.credentials.provider.PublicKeyCredentialEntry
 import androidx.credentials.webauthn.PublicKeyCredentialRequestOptions
+import java.util.concurrent.atomic.AtomicInteger
 
 @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-class MyCredentialProviderService: CredentialProviderService() {
-    private val PERSONAL_ACCOUNT_ID: String = ""
-    private val FAMILY_ACCOUNT_ID: String = ""
-    private val CREATE_PASSKEY_INTENT: String = ""
-    private val PACKAGE_NAME: String = ""
-    private val EXTRA_KEY_ACCOUNT_ID: String = ""
-    private val UNIQUE_REQ_CODE: Int = 1
-    private val UNLOCK_INTENT: String = ""
-    private val UNIQUE_REQUEST_CODE: Int = 0
-    private val TAG: String = ""
-    private val GET_PASSWORD_INTENT: String = ""
+class ExpoCredsProviderService: CredentialProviderService() {
+    private val PERSONAL_ACCOUNT_ID: String = "personal"
+    private val FAMILY_ACCOUNT_ID: String = "family"
+    private val CREATE_PASSKEY_INTENT: String = "expo.modules.creds.CREATE_PASSKEY"
+    private val PACKAGE_NAME: String = "expo.modules.creds"
+    private val EXTRA_KEY_ACCOUNT_ID: String = "account_id"
+    private val UNLOCK_INTENT: String = "expo.modules.creds.UNLOCK_INTENT"
+    private val TAG: String = "ExpoCredsProviderService"
+    private val GET_PASSWORD_INTENT: String = "expo.modules.creds.GET_PASSWORD_INTENT"
+    private val requestCode = AtomicInteger()
 
     // [START android_identity_credential_provider_passkey_creation]
     override fun onBeginCreateCredentialRequest(
@@ -106,7 +106,7 @@ class MyCredentialProviderService: CredentialProviderService() {
         intent.putExtra(EXTRA_KEY_ACCOUNT_ID, accountId)
 
         return PendingIntent.getActivity(
-            applicationContext, UNIQUE_REQ_CODE,
+            applicationContext, requestCode.getAndIncrement(),
             intent, (
                 PendingIntent.FLAG_MUTABLE
                     or PendingIntent.FLAG_UPDATE_CURRENT
@@ -148,7 +148,7 @@ class MyCredentialProviderService: CredentialProviderService() {
     private fun createUnlockPendingIntent(): PendingIntent {
         val intent = Intent(UNLOCK_INTENT).setPackage(PACKAGE_NAME)
         return PendingIntent.getActivity(
-            applicationContext, UNIQUE_REQUEST_CODE, intent, (
+            applicationContext, requestCode.getAndIncrement(), intent, (
                 PendingIntent.FLAG_MUTABLE
                     or PendingIntent.FLAG_UPDATE_CURRENT
                 )
@@ -160,8 +160,8 @@ class MyCredentialProviderService: CredentialProviderService() {
     companion object {
         // These intent actions are specified for corresponding activities
         // that are to be invoked through the PendingIntent(s)
-        private const val GET_PASSKEY_INTENT_ACTION = "PACKAGE_NAME.GET_PASSKEY"
-        private const val GET_PASSWORD_INTENT_ACTION = "PACKAGE_NAME.GET_PASSWORD"
+        private const val GET_PASSKEY_INTENT_ACTION = "$PACKAGE_NAME.GET_PASSKEY"
+        private const val GET_PASSWORD_INTENT_ACTION = "$PACKAGE_NAME.GET_PASSWORD"
 
     }
 
@@ -267,7 +267,7 @@ class MyCredentialProviderService: CredentialProviderService() {
         }
 
         return PendingIntent.getActivity(
-            applicationContext, UNIQUE_REQUEST_CODE, intent,
+            applicationContext, requestCode.getAndIncrement(), intent,
             (PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         )
     }

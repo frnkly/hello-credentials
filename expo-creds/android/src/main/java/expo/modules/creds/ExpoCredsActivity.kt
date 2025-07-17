@@ -52,11 +52,11 @@ import java.security.spec.ECParameterSpec
 import java.security.spec.ECPoint
 import java.security.spec.EllipticCurve
 
-class CredentialProviderDummyActivity: FragmentActivity() {
+class ExpoCredsActivity: FragmentActivity() {
 
-    private val PERSONAL_ACCOUNT_ID: String = ""
-    private val FAMILY_ACCOUNT_ID: String = ""
-    private val CREATE_PASSWORD_INTENT: String = ""
+    private val PERSONAL_ACCOUNT_ID: String = "personal"
+    private val FAMILY_ACCOUNT_ID: String = "family"
+    private val CREATE_PASSWORD_INTENT: String = "expo.modules.creds.CREATE_PASSWORD_INTENT"
 
     @RequiresApi(VERSION_CODES.M)
     // [START android_identity_credential_provider_handle_passkey]
@@ -442,7 +442,7 @@ class CredentialProviderDummyActivity: FragmentActivity() {
 }
 
 object CredentialsRepo {
-    const val EXTRA_KEY_ACCOUNT_ID: String = ""
+    const val EXTRA_KEY_ACCOUNT_ID: String = "account_id"
 }
 
 class MyDatabase {
